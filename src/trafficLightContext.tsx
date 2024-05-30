@@ -109,7 +109,9 @@ export const actions = {
 
   handlePedestrianClick: () => ({ type: actionTypes.PEDESTRIAN_REQUEST_GREEN }),
 
-  pedestrianGoesRed: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_RED }),
+  setPedestrianLightRed: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_RED }),
 
-  pedestrianGoesGreen: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_GREEN }),
+  setPedestrianLightGreen: () => ({
+    type: actionTypes.SET_PEDESTRIAN_LIGHT_GREEN,
+  }),
 };

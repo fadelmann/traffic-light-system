@@ -33,11 +33,11 @@ export const useRunPedestrianGreenPhase = () => {
 
     await delay(DELAY_BEFORE_GREEN_SIDE);
 
-    dispatch(actions.pedestrianGoesGreen());
+    dispatch(actions.setPedestrianLightGreen());
 
     await delay(5000);
 
-    dispatch(actions.pedestrianGoesRed());
+    dispatch(actions.setPedestrianLightRed());
 
     await delay(DELAY_BEFORE_YELLOW_SIDE);
 
