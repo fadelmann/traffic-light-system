@@ -34,12 +34,13 @@ export type DispatchType = Dispatch<TrafficLightAction>;
 export type TrafficLightAction =
   | { type: typeof actionTypes.START_SYSTEM }
   | {
-      type: typeof actionTypes.CHANGE_TRAFFIC_LIGHT_COLOR;
-      trafficLightType: string;
+      type: typeof actionTypes.SET_TRAFFIC_LIGHT_COLOR;
+      street: Streets;
+      trafficLightColor: TrafficLightColors;
     }
-  | { type: typeof actionTypes.PEDESTRIAN_CLICK }
+  | { type: typeof actionTypes.PEDESTRIAN_REQUEST_GREEN }
   | { type: typeof actionTypes.REMOVE_PEDESTRIAN_FROM_QUEUE }
-  | { type: typeof actionTypes.PEDESTRIAN_GOES_RED }
-  | { type: typeof actionTypes.PEDESTRIAN_GOES_GREEN }
+  | { type: typeof actionTypes.SET_PEDESTRIAN_LIGHT_RED }
+  | { type: typeof actionTypes.SET_PEDESTRIAN_LIGHT_GREEN }
   | { type: typeof actionTypes.SET_PEDESTRIAN_PHASE_ACTIVE }
   | { type: typeof actionTypes.SET_PEDESTRIAN_PHASE_INACTIVE };

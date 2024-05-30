@@ -49,24 +49,24 @@ const trafficLightReducer = (state, action): TrafficLightState => {
         isSystemActive: true,
       };
 
-    case actionTypes.CHANGE_TRAFFIC_LIGHT_COLOR:
+    case actionTypes.SET_TRAFFIC_LIGHT_COLOR:
       return action.street === Streets.MAIN
         ? { ...state, mainStreetTrafficLightColor: action.trafficLightColor }
         : { ...state, sideStreetTrafficLightColor: action.trafficLightColor };
 
-    case actionTypes.PEDESTRIAN_CLICK:
+    case actionTypes.PEDESTRIAN_REQUEST_GREEN:
       return { ...state, isPedestrianInQueue: true };
 
     case actionTypes.REMOVE_PEDESTRIAN_FROM_QUEUE:
       return { ...state, isPedestrianInQueue: false };
 
-    case actionTypes.PEDESTRIAN_GOES_RED:
+    case actionTypes.SET_PEDESTRIAN_LIGHT_RED:
       return {
         ...state,
         pedestrianTrafficLightColor: PedestrianTrafficLightColors.RED,
       };
 
-    case actionTypes.PEDESTRIAN_GOES_GREEN:
+    case actionTypes.SET_PEDESTRIAN_LIGHT_GREEN:
       return {
         ...state,
         pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREEN,
@@ -90,7 +90,7 @@ export const actions = {
     street: Streets,
     trafficLightColor: TrafficLightColors
   ) => ({
-    type: actionTypes.CHANGE_TRAFFIC_LIGHT_COLOR,
+    type: actionTypes.SET_TRAFFIC_LIGHT_COLOR,
     street,
     trafficLightColor,
   }),
@@ -107,9 +107,9 @@ export const actions = {
     type: actionTypes.REMOVE_PEDESTRIAN_FROM_QUEUE,
   }),
 
-  handlePedestrianClick: () => ({ type: actionTypes.PEDESTRIAN_CLICK }),
+  handlePedestrianClick: () => ({ type: actionTypes.PEDESTRIAN_REQUEST_GREEN }),
 
-  pedestrianGoesRed: () => ({ type: actionTypes.PEDESTRIAN_GOES_RED }),
+  pedestrianGoesRed: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_RED }),
 
-  pedestrianGoesGreen: () => ({ type: actionTypes.PEDESTRIAN_GOES_GREEN }),
+  pedestrianGoesGreen: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_GREEN }),
 };
