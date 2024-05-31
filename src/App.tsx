@@ -4,12 +4,62 @@ import { Container, Box } from "@mui/material";
 import { MainStreetTrafficLight } from "./components/mainStreetTrafficLight";
 import { SideStreetTrafficLight } from "./components/sideStreetTrafficLight";
 import { PedestrianTrafficLight } from "./components/pedestrianTrafficLight";
-import { TrafficLightProvider } from "./trafficLightContext";
-import { TrafficLightButtons } from "./components/trafficLightButtons";
+import { useTrafficLightsState } from "./trafficLightContext";
+import { TrafficLightButton } from "./components/trafficLightStartButton";
 import TrafficImage from "./assets/Traffic_Lights_Background.png";
+import {
+  useRunPedestrianGreenPhase,
+  useRunSideStreetGreenPhase,
+} from "./useTrafficLightPhases";
+import { TOTAL_TRAFFIC_LIGHT_DURATION } from "./constants";
+import { useRef } from "react";
+import { useEffect } from "react";
 
-const App = () => (
-  <TrafficLightProvider>
+export const App = () => {
+  const { isPedestrianPhaseActive, isPedestrianInQueue, hasSimulationStarted } =
+    useTrafficLightsState();
+
+  const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
+  const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
+
+  const pedestrianInQueueRef = useRef(isPedestrianInQueue);
+  const pedestrianPhaseActiveRef = useRef(isPedestrianPhaseActive);
+
+  useEffect(() => {
+    pedestrianInQueueRef.current = isPedestrianInQueue;
+  }, [isPedestrianInQueue]);
+
+  useEffect(() => {
+    pedestrianPhaseActiveRef.current = isPedestrianPhaseActive;
+  }, [isPedestrianPhaseActive]);
+
+  useEffect(() => {
+    if (!hasSimulationStarted || pedestrianPhaseActiveRef.current) {
+      return;
+    }
+
+    const runPhase = () => {
+      if (pedestrianInQueueRef.current) {
+        clearInterval(interval);
+        runPedestrianGreenPhase();
+      } else {
+        runSideStreetGreenPhase();
+      }
+    };
+
+    runPhase();
+
+    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION);
+
+    return () => clearInterval(interval);
+  }, [
+    hasSimulationStarted,
+    isPedestrianPhaseActive,
+    runPedestrianGreenPhase,
+    runSideStreetGreenPhase,
+  ]);
+
+  return (
     <Container>
       <Box position="relative" mt={5} width={600} marginX="auto">
         <img
@@ -30,9 +80,8 @@ const App = () => (
           <PedestrianTrafficLight />
         </Box>
       </Box>
-      <TrafficLightButtons />
-    </Container>
-  </TrafficLightProvider>
-);
 
-export default App;
+      <TrafficLightButton />
+    </Container>
+  );
+};

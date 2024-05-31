@@ -10,7 +10,7 @@ export type TrafficLightState = {
   mainStreetTrafficLightColor: TrafficLightColors;
   sideStreetTrafficLightColor: TrafficLightColors;
   pedestrianTrafficLightColor: PedestrianTrafficLightColors;
-  isSystemActive: boolean;
+  hasSimulationStarted: boolean;
   isPedestrianInQueue: boolean;
   isPedestrianPhaseActive: boolean;
 };

@@ -14,7 +14,7 @@ const initialState: TrafficLightState = {
   mainStreetTrafficLightColor: TrafficLightColors.GREY,
   sideStreetTrafficLightColor: TrafficLightColors.GREY,
   pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREY,
-  isSystemActive: false,
+  hasSimulationStarted: false,
   isPedestrianInQueue: false,
   isPedestrianPhaseActive: false,
 };
@@ -46,7 +46,7 @@ const trafficLightReducer = (state, action): TrafficLightState => {
         mainStreetTrafficLightColor: TrafficLightColors.GREEN,
         sideStreetTrafficLightColor: TrafficLightColors.RED,
         pedestrianTrafficLightColor: PedestrianTrafficLightColors.RED,
-        isSystemActive: true,
+        hasSimulationStarted: true,
       };
 
     case actionTypes.SET_TRAFFIC_LIGHT_COLOR:

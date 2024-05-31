@@ -16,7 +16,6 @@ export const useRunPedestrianGreenPhase = () => {
 
   return useCallback(async () => {
     dispatch(actions.removePedestrianFromQueue());
-
     dispatch(actions.startPedestrianPhaseRunning());
 
     await delay(DELAY_BEFORE_YELLOW_MAIN);

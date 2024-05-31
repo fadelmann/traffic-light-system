@@ -14,13 +14,13 @@ export const PedestrianTrafficLight = () => {
   const {
     isPedestrianInQueue,
     isPedestrianPhaseActive,
-    isSystemActive,
+    hasSimulationStarted,
     pedestrianTrafficLightColor,
   } = useTrafficLightsState();
   const dispatch = useTrafficLightDispatch();
 
   const isPedestrianWalkButtonDisabled =
-    isPedestrianInQueue || isPedestrianPhaseActive || !isSystemActive;
+    isPedestrianInQueue || isPedestrianPhaseActive || !hasSimulationStarted;
 
   return (
     <Box display="flex" gap={1} alignItems="center">
