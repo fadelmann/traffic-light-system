@@ -21,13 +21,13 @@ export const useRunPedestrianGreenPhase = () => {
     await delay(DELAY_BEFORE_YELLOW_MAIN);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.YELLOW)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.YELLOW)
     );
 
     await delay(DELAY_BEFORE_YELLOW_RED_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.RED)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.RED)
     );
 
     await delay(DELAY_BEFORE_GREEN_SIDE);
@@ -41,7 +41,7 @@ export const useRunPedestrianGreenPhase = () => {
     await delay(DELAY_BEFORE_YELLOW_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(
+      actions.setTrafficLightColor(
         Streets.MAIN,
         TrafficLightColors.YELLOW_AND_RED
       )
@@ -50,7 +50,7 @@ export const useRunPedestrianGreenPhase = () => {
     await delay(DELAY_BEFORE_YELLOW_RED_MAIN);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.GREEN)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.GREEN)
     );
 
     dispatch(actions.stopPedestrianPhaseRunning());
@@ -64,49 +64,49 @@ export const useRunSideStreetGreenPhase = () => {
     await delay(DELAY_BEFORE_YELLOW_MAIN);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.YELLOW)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.YELLOW)
     );
 
     await delay(DELAY_BEFORE_YELLOW_RED_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(
+      actions.setTrafficLightColor(
         Streets.SIDE,
         TrafficLightColors.YELLOW_AND_RED
       )
     );
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.RED)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.RED)
     );
 
     await delay(DELAY_BEFORE_GREEN_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.SIDE, TrafficLightColors.GREEN)
+      actions.setTrafficLightColor(Streets.SIDE, TrafficLightColors.GREEN)
     );
 
     await delay(DELAY_GREEN_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.SIDE, TrafficLightColors.YELLOW)
+      actions.setTrafficLightColor(Streets.SIDE, TrafficLightColors.YELLOW)
     );
 
     await delay(DELAY_BEFORE_YELLOW_SIDE);
 
     dispatch(
-      actions.changeTrafficLightColor(
+      actions.setTrafficLightColor(
         Streets.MAIN,
         TrafficLightColors.YELLOW_AND_RED
       )
     );
     dispatch(
-      actions.changeTrafficLightColor(Streets.SIDE, TrafficLightColors.RED)
+      actions.setTrafficLightColor(Streets.SIDE, TrafficLightColors.RED)
     );
 
     await delay(DELAY_BEFORE_YELLOW_RED_MAIN);
 
     dispatch(
-      actions.changeTrafficLightColor(Streets.MAIN, TrafficLightColors.GREEN)
+      actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.GREEN)
     );
   }, [dispatch]);
 };

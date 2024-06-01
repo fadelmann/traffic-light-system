@@ -4,16 +4,16 @@ import { Container, Box } from "@mui/material";
 import { MainStreetTrafficLight } from "./components/mainStreetTrafficLight";
 import { SideStreetTrafficLight } from "./components/sideStreetTrafficLight";
 import { PedestrianTrafficLight } from "./components/pedestrianTrafficLight";
-import { useTrafficLightsState } from "./trafficLightContext";
 import { TrafficLightButton } from "./components/trafficLightStartButton";
 import TrafficImage from "./assets/Traffic_Lights_Background.png";
 import {
   useRunPedestrianGreenPhase,
   useRunSideStreetGreenPhase,
-} from "./useTrafficLightPhases";
-import { TOTAL_TRAFFIC_LIGHT_DURATION } from "./constants";
+} from "./hooks/useTrafficLightPhases";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { useTrafficLightsState } from "./contexts/trafficLightContext";
+import { TOTAL_TRAFFIC_LIGHT_DURATION_MS } from "./utils/constants";
 
 export const App = () => {
   const { isPedestrianPhaseActive, isPedestrianInQueue, hasSimulationStarted } =
@@ -49,7 +49,7 @@ export const App = () => {
 
     runPhase();
 
-    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION);
+    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION_MS);
 
     return () => clearInterval(interval);
   }, [

@@ -1,8 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-import { TrafficLightColors } from "../types";
 import { TrafficLightCircle } from "./trafficLightCircle";
+import { TrafficLightColors } from "../utils/types";
 
 type TrafficLightProps = {
   activeColor: TrafficLightColors;

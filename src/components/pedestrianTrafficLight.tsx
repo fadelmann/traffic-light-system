@@ -7,8 +7,8 @@ import {
   actions,
   useTrafficLightDispatch,
   useTrafficLightsState,
-} from "../trafficLightContext";
-import { PedestrianTrafficLightColors } from "../types";
+} from "../contexts/trafficLightContext";
+import { PedestrianTrafficLightColors } from "../utils/types";
 
 export const PedestrianTrafficLight = () => {
   const {
@@ -35,7 +35,7 @@ export const PedestrianTrafficLight = () => {
       >
         <IconButton
           disabled={isPedestrianWalkButtonDisabled}
-          onClick={() => dispatch(actions.handlePedestrianClick())}
+          onClick={() => dispatch(actions.requestPedestrianGreen())}
           aria-label="request crossing road"
           size="small"
           color="primary"

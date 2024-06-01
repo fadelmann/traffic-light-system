@@ -1,14 +1,11 @@
 import React, { createContext, useReducer, useContext } from "react";
-
-import { actionTypes } from "./constants";
+import { noOp } from "../utils/helpers";
 import {
-  DispatchType,
+  TrafficLightState,
+  TrafficLightColors,
   PedestrianTrafficLightColors,
   Streets,
-  TrafficLightColors,
-  TrafficLightState,
-} from "./types";
-import { noOp } from "./helpers";
+} from "../utils/types";
 
 const initialState: TrafficLightState = {
   mainStreetTrafficLightColor: TrafficLightColors.GREY,
@@ -38,9 +35,12 @@ export const useTrafficLightsState = () => useContext(TrafficLightContext);
 export const useTrafficLightDispatch = () =>
   useContext(TrafficLightDispatchContext);
 
-const trafficLightReducer = (state, action): TrafficLightState => {
+const trafficLightReducer = (
+  state: TrafficLightState,
+  action
+): TrafficLightState => {
   switch (action.type) {
-    case actionTypes.START_SYSTEM:
+    case "START_SYSTEM":
       return {
         ...state,
         mainStreetTrafficLightColor: TrafficLightColors.GREEN,
@@ -49,33 +49,40 @@ const trafficLightReducer = (state, action): TrafficLightState => {
         hasSimulationStarted: true,
       };
 
-    case actionTypes.SET_TRAFFIC_LIGHT_COLOR:
-      return action.street === Streets.MAIN
-        ? { ...state, mainStreetTrafficLightColor: action.trafficLightColor }
-        : { ...state, sideStreetTrafficLightColor: action.trafficLightColor };
+    case "SET_MAIN_STREET_LIGHT_COLOR":
+      return {
+        ...state,
+        mainStreetTrafficLightColor: action.trafficLightColor,
+      };
 
-    case actionTypes.PEDESTRIAN_REQUEST_GREEN:
+    case "SET_SIDE_STREET_LIGHT_COLOR":
+      return {
+        ...state,
+        sideStreetTrafficLightColor: action.trafficLightColor,
+      };
+
+    case "REQUEST_PEDESTRIAN_GREEN":
       return { ...state, isPedestrianInQueue: true };
 
-    case actionTypes.REMOVE_PEDESTRIAN_FROM_QUEUE:
+    case "REMOVE_PEDESTRIAN_FROM_QUEUE":
       return { ...state, isPedestrianInQueue: false };
 
-    case actionTypes.SET_PEDESTRIAN_LIGHT_RED:
+    case "SET_PEDESTRIAN_LIGHT_RED":
       return {
         ...state,
         pedestrianTrafficLightColor: PedestrianTrafficLightColors.RED,
       };
 
-    case actionTypes.SET_PEDESTRIAN_LIGHT_GREEN:
+    case "SET_PEDESTRIAN_LIGHT_GREEN":
       return {
         ...state,
         pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREEN,
       };
 
-    case actionTypes.SET_PEDESTRIAN_PHASE_ACTIVE:
+    case "SET_PEDESTRIAN_PHASE_ACTIVE":
       return { ...state, isPedestrianPhaseActive: true };
 
-    case actionTypes.SET_PEDESTRIAN_PHASE_INACTIVE:
+    case "SET_PEDESTRIAN_PHASE_INACTIVE":
       return { ...state, isPedestrianPhaseActive: false };
 
     default:
@@ -84,34 +91,26 @@ const trafficLightReducer = (state, action): TrafficLightState => {
 };
 
 export const actions = {
-  startSystem: () => ({ type: actionTypes.START_SYSTEM }),
-
-  changeTrafficLightColor: (
-    street: Streets,
-    trafficLightColor: TrafficLightColors
+  startSystem: () => ({ type: "START_SYSTEM" }),
+  // fix setting right color
+  setTrafficLightColor: (
+    trafficLightColor: TrafficLightColors,
+    street: Streets
   ) => ({
-    type: actionTypes.SET_TRAFFIC_LIGHT_COLOR,
-    street,
+    type: "SET_TRAFFIC_LIGHT_COLOR",
     trafficLightColor,
+    street,
   }),
 
-  stopPedestrianPhaseRunning: () => ({
-    type: actionTypes.SET_PEDESTRIAN_PHASE_INACTIVE,
-  }),
+  requestPedestrianGreen: () => ({ type: "REQUEST_PEDESTRIAN_GREEN" }),
 
-  startPedestrianPhaseRunning: () => ({
-    type: actionTypes.SET_PEDESTRIAN_PHASE_ACTIVE,
-  }),
+  removePedestrianFromQueue: () => ({ type: "REMOVE_PEDESTRIAN_FROM_QUEUE" }),
 
-  removePedestrianFromQueue: () => ({
-    type: actionTypes.REMOVE_PEDESTRIAN_FROM_QUEUE,
-  }),
+  setPedestrianLightRed: () => ({ type: "SET_PEDESTRIAN_LIGHT_RED" }),
 
-  handlePedestrianClick: () => ({ type: actionTypes.PEDESTRIAN_REQUEST_GREEN }),
+  setPedestrianLightGreen: () => ({ type: "SET_PEDESTRIAN_LIGHT_GREEN" }),
 
-  setPedestrianLightRed: () => ({ type: actionTypes.SET_PEDESTRIAN_LIGHT_RED }),
+  setPedestrianPhaseActive: () => ({ type: "SET_PEDESTRIAN_PHASE_ACTIVE" }),
 
-  setPedestrianLightGreen: () => ({
-    type: actionTypes.SET_PEDESTRIAN_LIGHT_GREEN,
-  }),
+  setPedestrianPhaseInactive: () => ({ type: "SET_PEDESTRIAN_PHASE_INACTIVE" }),
 };

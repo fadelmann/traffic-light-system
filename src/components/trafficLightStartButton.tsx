@@ -1,11 +1,10 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
-
 import {
-  actions,
-  useTrafficLightDispatch,
   useTrafficLightsState,
-} from "../trafficLightContext";
+  useTrafficLightDispatch,
+  actions,
+} from "../contexts/trafficLightContext";
 
 export const TrafficLightButton = () => {
   const { hasSimulationStarted } = useTrafficLightsState();
