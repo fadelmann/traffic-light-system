@@ -71,9 +71,6 @@ const trafficLightReducer = (
     case "REQUEST_PEDESTRIAN_GREEN":
       return { ...state, isPedestrianRequestPending: true };
 
-    case "CLEAR_PEDESTRIAN_REQUEST":
-      return { ...state, isPedestrianRequestPending: false };
-
     case "SET_PEDESTRIAN_TRAFFIC_LIGHT_COLOR":
       return {
         ...state,

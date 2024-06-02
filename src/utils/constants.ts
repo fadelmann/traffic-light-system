@@ -1,9 +1,9 @@
 // Delay constants in milliseconds
 export const TRAFFIC_GREEN_PHASE = 5000;
 export const TRAFFIC_YELLOW_PHASE = 1000;
-export const TRANSITION_PERIOD = 1000;
 export const TRAFFIC_YELLOW_AND_RED_PHASE = 2000;
 export const PEDESTRIAN_GREEN_PHASE = 5000;
+export const TRANSITION_PERIOD = 1000;
 
 // Total traffic light phase duration in milliseconds
 export const TOTAL_TRAFFIC_LIGHT_PHASE_DURATION =

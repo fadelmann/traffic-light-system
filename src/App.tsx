@@ -24,9 +24,10 @@ export const App = () => {
   const runPhase = () => {
     if (isPedestrianRequestPending) {
       runPedestrianGreenPhase();
-    } else {
-      runSideStreetGreenPhase();
+      return;
     }
+
+    runSideStreetGreenPhase();
   };
 
   useEffect(() => {
