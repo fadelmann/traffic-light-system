@@ -13,7 +13,7 @@ import {
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useTrafficLightsState } from "./contexts/trafficLightContext";
-import { TOTAL_TRAFFIC_LIGHT_DURATION } from "./utils/constants";
+import { TOTAL_TRAFFIC_LIGHT_PHASE_DURATION } from "./utils/constants";
 
 export const App = () => {
   const {
@@ -52,7 +52,7 @@ export const App = () => {
 
     runPhase();
 
-    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION);
+    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_PHASE_DURATION);
 
     return () => clearInterval(interval);
   }, [

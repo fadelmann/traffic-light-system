@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 
 import { TrafficLightCircle } from "./trafficLightCircle";
@@ -25,11 +25,8 @@ export const PedestrianTrafficLight = () => {
     !hasSimulationStarted;
 
   return (
-    <Box display="flex" gap={1} alignItems="center">
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+    <Stack direction="row" gap={1} alignItems="center">
+      <Stack
         bgcolor={isPedestrianWalkButtonDisabled ? "grey" : "white"}
         borderRadius={8}
         height={30}
@@ -44,33 +41,25 @@ export const PedestrianTrafficLight = () => {
         >
           <DirectionsWalkIcon fontSize="inherit" />
         </IconButton>
-      </Box>
+      </Stack>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={0.5}
-        bgcolor="black"
-        padding={0.5}
-        borderRadius={1}
-      >
+      <Stack gap={0.5} bgcolor="black" padding={0.5} borderRadius={1}>
         <TrafficLightCircle
-          bgColor={
+          trafficLightColor={
             pedestrianTrafficLightColor === PedestrianTrafficLightColors.RED
               ? PedestrianTrafficLightColors.RED
-              : PedestrianTrafficLightColors.GREY
+              : PedestrianTrafficLightColors.OFF
           }
         />
 
         <TrafficLightCircle
-          bgColor={
+          trafficLightColor={
             pedestrianTrafficLightColor === PedestrianTrafficLightColors.GREEN
               ? PedestrianTrafficLightColors.GREEN
-              : PedestrianTrafficLightColors.GREY
+              : PedestrianTrafficLightColors.OFF
           }
         />
-      </Box>
-    </Box>
+      </Stack>
+    </Stack>
   );
 };

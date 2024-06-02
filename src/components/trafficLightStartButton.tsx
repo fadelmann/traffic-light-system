@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import {
   useTrafficLightsState,
   useTrafficLightDispatch,
@@ -15,7 +15,7 @@ export const TrafficLightButton = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" mt={5}>
+    <Box mt={5} display="flex" justifyContent="center">
       <Button
         variant="contained"
         color="primary"

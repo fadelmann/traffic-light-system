@@ -8,9 +8,9 @@ import {
 } from "../utils/types";
 
 const initialState: TrafficLightState = {
-  mainStreetTrafficLightColor: TrafficLightColors.GREY,
-  sideStreetTrafficLightColor: TrafficLightColors.GREY,
-  pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREY,
+  mainStreetTrafficLightColor: TrafficLightColors.OFF,
+  sideStreetTrafficLightColor: TrafficLightColors.OFF,
+  pedestrianTrafficLightColor: PedestrianTrafficLightColors.OFF,
   hasSimulationStarted: false,
   isPedestrianRequestPending: false,
   isPedestrianGreenPhaseActive: false,

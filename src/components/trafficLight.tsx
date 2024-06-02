@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Stack } from "@mui/material";
 
 import { TrafficLightCircle } from "./trafficLightCircle";
 import { TrafficLightColors } from "../utils/types";
@@ -10,44 +10,42 @@ type TrafficLightProps = {
 };
 
 export const TrafficLight = ({
-  activeColor = TrafficLightColors.GREY,
+  activeColor = TrafficLightColors.OFF,
   displayHorizontal = false,
 }: TrafficLightProps) => (
-  <Box>
-    <Box
+  <Stack>
+    <Stack
       bgcolor="black"
       padding={0.5}
       borderRadius={1}
-      display="flex"
-      flexDirection={displayHorizontal ? "row-reverse" : "column"}
-      alignItems="center"
+      direction={displayHorizontal ? "row-reverse" : "column"}
       gap={0.5}
     >
       <TrafficLightCircle
-        bgColor={
+        trafficLightColor={
           activeColor === TrafficLightColors.RED ||
           activeColor === TrafficLightColors.YELLOW_AND_RED
             ? TrafficLightColors.RED
-            : TrafficLightColors.GREY
+            : TrafficLightColors.OFF
         }
       />
 
       <TrafficLightCircle
-        bgColor={
+        trafficLightColor={
           activeColor === TrafficLightColors.YELLOW ||
           activeColor === TrafficLightColors.YELLOW_AND_RED
             ? TrafficLightColors.YELLOW
-            : TrafficLightColors.GREY
+            : TrafficLightColors.OFF
         }
       />
 
       <TrafficLightCircle
-        bgColor={
+        trafficLightColor={
           activeColor === TrafficLightColors.GREEN
             ? TrafficLightColors.GREEN
-            : TrafficLightColors.GREY
+            : TrafficLightColors.OFF
         }
       />
-    </Box>
-  </Box>
+    </Stack>
+  </Stack>
 );

@@ -19,11 +19,19 @@ export enum TrafficLightColors {
   YELLOW = "yellow",
   YELLOW_AND_RED = "yellowAndRed",
   RED = "red",
-  GREY = "#222222",
+  OFF = "off",
 }
 
 export enum PedestrianTrafficLightColors {
   GREEN = "green",
   RED = "red",
-  GREY = "#222222",
+  OFF = "off",
 }
+
+// Map to convert traffic light colors to their hex codes
+export const mapTrafficLightColorsToHex = {
+  [TrafficLightColors.GREEN]: "#00FF00",
+  [TrafficLightColors.YELLOW]: "#FFFF00",
+  [TrafficLightColors.RED]: "#FF0000",
+  [TrafficLightColors.OFF]: "#222222",
+};
