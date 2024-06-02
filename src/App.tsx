@@ -16,7 +16,8 @@ import { useInterval } from "./hooks/useSetIntervall";
 import { useEffect } from "react";
 
 export const App = () => {
-  const { isPedestrianRequestPending } = useTrafficLightsState();
+  const { isPedestrianRequestPending, hasSimulationStarted } =
+    useTrafficLightsState();
 
   const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
@@ -31,6 +32,9 @@ export const App = () => {
   };
 
   useEffect(() => {
+    if (!hasSimulationStarted) {
+      return;
+    }
     runPhase();
   }, []);
 
