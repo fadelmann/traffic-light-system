@@ -12,8 +12,8 @@ const initialState: TrafficLightState = {
   sideStreetTrafficLightColor: TrafficLightColors.GREY,
   pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREY,
   hasSimulationStarted: false,
-  isPedestrianInQueue: false,
-  isPedestrianPhaseActive: false,
+  isPedestrianRequestPending: false,
+  isPedestrianGreenPhaseActive: false,
 };
 
 const TrafficLightContext = createContext<TrafficLightState>(initialState);
@@ -49,41 +49,34 @@ const trafficLightReducer = (
         hasSimulationStarted: true,
       };
 
-    case "SET_MAIN_STREET_LIGHT_COLOR":
-      return {
-        ...state,
-        mainStreetTrafficLightColor: action.trafficLightColor,
-      };
-
-    case "SET_SIDE_STREET_LIGHT_COLOR":
-      return {
-        ...state,
-        sideStreetTrafficLightColor: action.trafficLightColor,
-      };
+    case "SET_TRAFFIC_LIGHT_COLOR":
+      return action.street === Streets.MAIN
+        ? {
+            ...state,
+            mainStreetTrafficLightColor: action.trafficLightColor,
+          }
+        : {
+            ...state,
+            sideStreetTrafficLightColor: action.trafficLightColor,
+          };
 
     case "REQUEST_PEDESTRIAN_GREEN":
-      return { ...state, isPedestrianInQueue: true };
+      return { ...state, isPedestrianRequestPending: true };
 
-    case "REMOVE_PEDESTRIAN_FROM_QUEUE":
-      return { ...state, isPedestrianInQueue: false };
+    case "CLEAR_PEDESTRIAN_REQUEST":
+      return { ...state, isPedestrianRequestPending: false };
 
-    case "SET_PEDESTRIAN_LIGHT_RED":
+    case "SET_PEDESTRIAN_TRAFFIC_LIGHT_COLOR":
       return {
         ...state,
-        pedestrianTrafficLightColor: PedestrianTrafficLightColors.RED,
-      };
-
-    case "SET_PEDESTRIAN_LIGHT_GREEN":
-      return {
-        ...state,
-        pedestrianTrafficLightColor: PedestrianTrafficLightColors.GREEN,
+        pedestrianTrafficLightColor: action.pedestrianTrafficLightColor,
       };
 
     case "SET_PEDESTRIAN_PHASE_ACTIVE":
-      return { ...state, isPedestrianPhaseActive: true };
+      return { ...state, isPedestrianGreenPhaseActive: true };
 
     case "SET_PEDESTRIAN_PHASE_INACTIVE":
-      return { ...state, isPedestrianPhaseActive: false };
+      return { ...state, isPedestrianGreenPhaseActive: false };
 
     default:
       return state;
@@ -92,23 +85,26 @@ const trafficLightReducer = (
 
 export const actions = {
   startSystem: () => ({ type: "START_SYSTEM" }),
-  // fix setting right color
+
   setTrafficLightColor: (
-    trafficLightColor: TrafficLightColors,
-    street: Streets
+    street: Streets,
+    trafficLightColor: TrafficLightColors
   ) => ({
     type: "SET_TRAFFIC_LIGHT_COLOR",
     trafficLightColor,
     street,
   }),
 
+  setPedestrianColor: (
+    pedestrianTrafficLightColor: PedestrianTrafficLightColors
+  ) => ({
+    type: "SET_PEDESTRIAN_TRAFFIC_LIGHT_COLOR",
+    pedestrianTrafficLightColor,
+  }),
+
   requestPedestrianGreen: () => ({ type: "REQUEST_PEDESTRIAN_GREEN" }),
 
-  removePedestrianFromQueue: () => ({ type: "REMOVE_PEDESTRIAN_FROM_QUEUE" }),
-
-  setPedestrianLightRed: () => ({ type: "SET_PEDESTRIAN_LIGHT_RED" }),
-
-  setPedestrianLightGreen: () => ({ type: "SET_PEDESTRIAN_LIGHT_GREEN" }),
+  clearPedestrianRequest: () => ({ type: "CLEAR_PEDESTRIAN_REQUEST" }),
 
   setPedestrianPhaseActive: () => ({ type: "SET_PEDESTRIAN_PHASE_ACTIVE" }),
 

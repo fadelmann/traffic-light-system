@@ -13,25 +13,28 @@ import {
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useTrafficLightsState } from "./contexts/trafficLightContext";
-import { TOTAL_TRAFFIC_LIGHT_DURATION_MS } from "./utils/constants";
+import { TOTAL_TRAFFIC_LIGHT_DURATION } from "./utils/constants";
 
 export const App = () => {
-  const { isPedestrianPhaseActive, isPedestrianInQueue, hasSimulationStarted } =
-    useTrafficLightsState();
+  const {
+    isPedestrianGreenPhaseActive,
+    isPedestrianRequestPending,
+    hasSimulationStarted,
+  } = useTrafficLightsState();
 
   const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
 
-  const pedestrianInQueueRef = useRef(isPedestrianInQueue);
-  const pedestrianPhaseActiveRef = useRef(isPedestrianPhaseActive);
+  const pedestrianRequestPending = useRef(isPedestrianRequestPending);
+  const pedestrianPhaseActiveRef = useRef(isPedestrianGreenPhaseActive);
 
   useEffect(() => {
-    pedestrianInQueueRef.current = isPedestrianInQueue;
-  }, [isPedestrianInQueue]);
+    pedestrianRequestPending.current = isPedestrianRequestPending;
+  }, [isPedestrianRequestPending]);
 
   useEffect(() => {
-    pedestrianPhaseActiveRef.current = isPedestrianPhaseActive;
-  }, [isPedestrianPhaseActive]);
+    pedestrianPhaseActiveRef.current = isPedestrianGreenPhaseActive;
+  }, [isPedestrianGreenPhaseActive]);
 
   useEffect(() => {
     if (!hasSimulationStarted || pedestrianPhaseActiveRef.current) {
@@ -39,7 +42,7 @@ export const App = () => {
     }
 
     const runPhase = () => {
-      if (pedestrianInQueueRef.current) {
+      if (pedestrianRequestPending.current) {
         clearInterval(interval);
         runPedestrianGreenPhase();
       } else {
@@ -49,12 +52,12 @@ export const App = () => {
 
     runPhase();
 
-    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION_MS);
+    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_DURATION);
 
     return () => clearInterval(interval);
   }, [
     hasSimulationStarted,
-    isPedestrianPhaseActive,
+    isPedestrianGreenPhaseActive,
     runPedestrianGreenPhase,
     runSideStreetGreenPhase,
   ]);

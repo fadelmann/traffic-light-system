@@ -10,8 +10,8 @@ export type TrafficLightState = {
   sideStreetTrafficLightColor: TrafficLightColors;
   pedestrianTrafficLightColor: PedestrianTrafficLightColors;
   hasSimulationStarted: boolean;
-  isPedestrianInQueue: boolean;
-  isPedestrianPhaseActive: boolean;
+  isPedestrianRequestPending: boolean;
+  isPedestrianGreenPhaseActive: boolean;
 };
 
 export enum TrafficLightColors {

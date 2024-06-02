@@ -12,15 +12,17 @@ import { PedestrianTrafficLightColors } from "../utils/types";
 
 export const PedestrianTrafficLight = () => {
   const {
-    isPedestrianInQueue,
-    isPedestrianPhaseActive,
+    isPedestrianRequestPending,
+    isPedestrianGreenPhaseActive,
     hasSimulationStarted,
     pedestrianTrafficLightColor,
   } = useTrafficLightsState();
   const dispatch = useTrafficLightDispatch();
 
   const isPedestrianWalkButtonDisabled =
-    isPedestrianInQueue || isPedestrianPhaseActive || !hasSimulationStarted;
+    isPedestrianRequestPending ||
+    isPedestrianGreenPhaseActive ||
+    !hasSimulationStarted;
 
   return (
     <Box display="flex" gap={1} alignItems="center">
