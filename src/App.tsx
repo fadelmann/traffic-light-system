@@ -10,88 +10,37 @@ import {
   useRunPedestrianGreenPhase,
   useRunSideStreetGreenPhase,
 } from "./hooks/useTrafficLightPhases";
-import { useRef } from "react";
-import { useEffect } from "react";
 import { useTrafficLightsState } from "./contexts/trafficLightContext";
 import { TOTAL_TRAFFIC_LIGHT_PHASE_DURATION } from "./utils/constants";
+import { useInterval } from "./hooks/useSetIntervall";
+import { useEffect } from "react";
 
 export const App = () => {
-  const {
-    isPedestrianGreenPhaseActive,
-    isPedestrianRequestPending,
-    hasSimulationStarted,
-  } = useTrafficLightsState();
+  const { isPedestrianRequestPending } = useTrafficLightsState();
 
   const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
 
-  /*
-    Creating a ref for the pedestrian traffic light state because otherwise it
-    wouldn't update inside the setInterval. The callback passed into
-    setInterval's closure only accesses the state in the first render.
-  */
-  const pedestrianTrafficLightState = useRef("idle");
-
-  /*
-    Using the useEffect hook, the ref gets updated depending on the context's state,
-    which is in the dependency array so that the code runs again if one of these variables changes.
-  */
-  useEffect(() => {
+  const runPhase = () => {
     if (isPedestrianRequestPending) {
-      pedestrianTrafficLightState.current = "requested";
-      return;
+      runPedestrianGreenPhase();
+    } else {
+      runSideStreetGreenPhase();
     }
+  };
 
-    if (isPedestrianGreenPhaseActive) {
-      pedestrianTrafficLightState.current = "active";
-      return;
-    }
-
-    if (hasSimulationStarted) {
-      pedestrianTrafficLightState.current = "idle";
-      return;
-    }
-
-    pedestrianTrafficLightState.current = "inactive";
-  }, [
-    isPedestrianRequestPending,
-    isPedestrianGreenPhaseActive,
-    hasSimulationStarted,
-  ]);
+  useEffect(() => {
+    runPhase();
+  }, []);
 
   /*
-    With this code also running again after the context state changes,
-    we can inject the updated value of the ref inside the setInterval
-    to stop it and trigger the pedestrian green phase when it is requested.
+    Creating a ref for the callback otherwise it
+    wouldn't update inside the setInterval. The callback passed into
+    setInterval's closure otherwise gets set on first render and stays that way.
+    Setting the total duration of the sideStreetGreenphase as the interval duration.
+    After it's finished, it checks if the user hit the pedestrian requests crossing button.
   */
-  useEffect(() => {
-    if (
-      pedestrianTrafficLightState.current === "inactive" ||
-      pedestrianTrafficLightState.current === "active"
-    ) {
-      return;
-    }
-
-    const runPhase = () => {
-      if (pedestrianTrafficLightState.current === "requested") {
-        clearInterval(interval);
-        runPedestrianGreenPhase();
-      } else {
-        runSideStreetGreenPhase();
-      }
-    };
-
-    runPhase();
-
-    const interval = setInterval(runPhase, TOTAL_TRAFFIC_LIGHT_PHASE_DURATION);
-
-    return () => clearInterval(interval);
-  }, [
-    hasSimulationStarted,
-    isPedestrianGreenPhaseActive,
-    runPedestrianGreenPhase,
-    runSideStreetGreenPhase,
-  ]);
+  useInterval(runPhase, TOTAL_TRAFFIC_LIGHT_PHASE_DURATION);
 
   return (
     <Container>
