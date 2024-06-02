@@ -4,7 +4,7 @@ import { Stack } from "@mui/material";
 import { TrafficLightCircle } from "./trafficLightCircle";
 import { useTrafficLightsState } from "../contexts/trafficLightContext";
 import { PedestrianTrafficLightColors } from "../utils/types";
-import { PedestrianTrafficLightButton } from "./PedestrianTrafficLightButton";
+import { PedestrianTrafficLightButton } from "./pedestiranTrafficLightButton";
 
 export const PedestrianTrafficLight = () => {
   const { pedestrianTrafficLightColor } = useTrafficLightsState();

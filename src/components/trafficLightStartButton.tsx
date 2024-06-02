@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import {
   useTrafficLightsState,
   useTrafficLightDispatch,

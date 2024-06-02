@@ -40,8 +40,8 @@ export const useTrafficLightDispatch = () =>
   useContext(TrafficLightDispatchContext);
 
 /*
-  Use a reducer function to leverage the flux pattern to to reduce the complexity
-  and keep all logic in one easy-to-access place.
+  Reducer function that manages the traffic light state based on dispatched actions.
+  This keeps the logic centralized and simplifies state management.
  */
 const trafficLightReducer = (
   state: TrafficLightState,
@@ -96,7 +96,8 @@ const trafficLightReducer = (
 };
 
 /*
- Action creators for dispatching actions from components.
+  Action creators for dispatching actions that update the traffic light state.
+  These functions provide a clean way to trigger state changes from components.
 */
 export const actions = {
   startSystem: () => ({ type: "START_SYSTEM" }),
