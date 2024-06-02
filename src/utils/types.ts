@@ -1,10 +1,9 @@
-import { Dispatch } from "react";
-
 export enum Streets {
   MAIN = "main",
   SIDE = "side",
 }
 
+//Type of the reducer state
 export type TrafficLightState = {
   mainStreetTrafficLightColor: TrafficLightColors;
   sideStreetTrafficLightColor: TrafficLightColors;
@@ -28,7 +27,7 @@ export enum PedestrianTrafficLightColors {
   OFF = "off",
 }
 
-// Map to convert traffic light colors to their hex codes
+// Map to convert traffic light colors to the matching hex codes
 export const mapTrafficLightColorsToHex = {
   [TrafficLightColors.GREEN]: "#00FF00",
   [TrafficLightColors.YELLOW]: "#FFFF00",

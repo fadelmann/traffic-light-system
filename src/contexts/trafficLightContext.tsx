@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, Dispatch } from "react";
 import { noOp } from "../utils/helpers";
 import {
   TrafficLightState,
@@ -17,8 +17,12 @@ const initialState: TrafficLightState = {
 };
 
 const TrafficLightContext = createContext<TrafficLightState>(initialState);
-const TrafficLightDispatchContext = createContext<DispatchType>(noOp);
+const TrafficLightDispatchContext = createContext<Dispatch<any>>(noOp);
 
+/*
+  Wrap the app inside two contexts to provide access to the state and dispatch actions
+  from all nested components, avoiding prop drilling.
+*/
 export const TrafficLightProvider = ({ children }) => {
   const [state, dispatch] = useReducer(trafficLightReducer, initialState);
 
@@ -35,6 +39,10 @@ export const useTrafficLightsState = () => useContext(TrafficLightContext);
 export const useTrafficLightDispatch = () =>
   useContext(TrafficLightDispatchContext);
 
+/*
+  Use a reducer function to leverage the flux pattern to to reduce the complexity
+  and keep all logic in one easy-to-access place.
+ */
 const trafficLightReducer = (
   state: TrafficLightState,
   action
@@ -72,10 +80,14 @@ const trafficLightReducer = (
         pedestrianTrafficLightColor: action.pedestrianTrafficLightColor,
       };
 
-    case "SET_PEDESTRIAN_PHASE_ACTIVE":
-      return { ...state, isPedestrianGreenPhaseActive: true };
+    case "START_PEDESTRIAN_GREEN_PHASE":
+      return {
+        ...state,
+        isPedestrianGreenPhaseActive: true,
+        isPedestrianRequestPending: false,
+      };
 
-    case "SET_PEDESTRIAN_PHASE_INACTIVE":
+    case "STOP_PEDESTRIAN_GREEN_PHASE":
       return { ...state, isPedestrianGreenPhaseActive: false };
 
     default:
@@ -83,6 +95,9 @@ const trafficLightReducer = (
   }
 };
 
+/*
+ Action creators for dispatching actions from components.
+*/
 export const actions = {
   startSystem: () => ({ type: "START_SYSTEM" }),
 
@@ -104,9 +119,7 @@ export const actions = {
 
   requestPedestrianGreen: () => ({ type: "REQUEST_PEDESTRIAN_GREEN" }),
 
-  clearPedestrianRequest: () => ({ type: "CLEAR_PEDESTRIAN_REQUEST" }),
+  startPedestrianGreenPhase: () => ({ type: "START_PEDESTRIAN_GREEN_PHASE" }),
 
-  setPedestrianPhaseActive: () => ({ type: "SET_PEDESTRIAN_PHASE_ACTIVE" }),
-
-  setPedestrianPhaseInactive: () => ({ type: "SET_PEDESTRIAN_PHASE_INACTIVE" }),
+  stopPedestrianPhase: () => ({ type: "STOP_PEDESTRIAN_GREEN_PHASE" }),
 };

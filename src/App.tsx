@@ -25,41 +25,55 @@ export const App = () => {
   const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
 
-  const pedestrianState = useRef("idle");
+  /*
+    Creating a ref for the pedestrian traffic light state because otherwise it
+    wouldn't update inside the setInterval. The callback passed into
+    setInterval's closure only accesses the state in the first render.
+  */
+  const pedestrianTrafficLightState = useRef("idle");
 
+  /*
+    Using the useEffect hook, the ref gets updated depending on the context's state,
+    which is in the dependency array so that the code runs again if one of these variables changes.
+  */
   useEffect(() => {
     if (isPedestrianRequestPending) {
-      pedestrianState.current = "requested";
+      pedestrianTrafficLightState.current = "requested";
       return;
     }
 
     if (isPedestrianGreenPhaseActive) {
-      pedestrianState.current = "active";
+      pedestrianTrafficLightState.current = "active";
       return;
     }
 
     if (hasSimulationStarted) {
-      pedestrianState.current = "idle";
+      pedestrianTrafficLightState.current = "idle";
       return;
     }
 
-    pedestrianState.current = "inactive";
+    pedestrianTrafficLightState.current = "inactive";
   }, [
     isPedestrianRequestPending,
     isPedestrianGreenPhaseActive,
     hasSimulationStarted,
   ]);
 
+  /*
+    With this code also running again after the context state changes,
+    we can inject the updated value of the ref inside the setInterval
+    to stop it and trigger the pedestrian green phase when it is requested.
+  */
   useEffect(() => {
     if (
-      pedestrianState.current === "inactive" ||
-      pedestrianState.current === "active"
+      pedestrianTrafficLightState.current === "inactive" ||
+      pedestrianTrafficLightState.current === "active"
     ) {
       return;
     }
 
     const runPhase = () => {
-      if (pedestrianState.current === "requested") {
+      if (pedestrianTrafficLightState.current === "requested") {
         clearInterval(interval);
         runPedestrianGreenPhase();
       } else {

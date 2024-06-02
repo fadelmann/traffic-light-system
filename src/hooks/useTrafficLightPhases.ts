@@ -17,12 +17,16 @@ import {
   TRANSITION_PERIOD,
 } from "../utils/constants";
 
+/*
+  Created two hooks to run both existing greenphases in the application
+  in order to abstract away the details of how the phases actually run from our component that define the UI
+  and also make it possible to call the functions from every component in the entire app.
+*/
 export const useRunPedestrianGreenPhase = () => {
   const dispatch = useTrafficLightDispatch();
 
   return useCallback(async () => {
-    dispatch(actions.clearPedestrianRequest());
-    dispatch(actions.setPedestrianPhaseActive());
+    dispatch(actions.startPedestrianGreenPhase());
 
     await delay(TRAFFIC_GREEN_PHASE);
 
@@ -59,7 +63,7 @@ export const useRunPedestrianGreenPhase = () => {
       actions.setTrafficLightColor(Streets.MAIN, TrafficLightColors.GREEN)
     );
 
-    dispatch(actions.setPedestrianPhaseInactive());
+    dispatch(actions.stopPedestrianPhase());
   }, [dispatch]);
 };
 
