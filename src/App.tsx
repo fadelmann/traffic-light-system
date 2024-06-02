@@ -25,24 +25,41 @@ export const App = () => {
   const runSideStreetGreenPhase = useRunSideStreetGreenPhase();
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
 
-  const pedestrianRequestPending = useRef(isPedestrianRequestPending);
-  const pedestrianPhaseActiveRef = useRef(isPedestrianGreenPhaseActive);
+  const pedestrianState = useRef("idle");
 
   useEffect(() => {
-    pedestrianRequestPending.current = isPedestrianRequestPending;
-  }, [isPedestrianRequestPending]);
+    if (isPedestrianRequestPending) {
+      pedestrianState.current = "requested";
+      return;
+    }
+
+    if (isPedestrianGreenPhaseActive) {
+      pedestrianState.current = "active";
+      return;
+    }
+
+    if (hasSimulationStarted) {
+      pedestrianState.current = "idle";
+      return;
+    }
+
+    pedestrianState.current = "inactive";
+  }, [
+    isPedestrianRequestPending,
+    isPedestrianGreenPhaseActive,
+    hasSimulationStarted,
+  ]);
 
   useEffect(() => {
-    pedestrianPhaseActiveRef.current = isPedestrianGreenPhaseActive;
-  }, [isPedestrianGreenPhaseActive]);
-
-  useEffect(() => {
-    if (!hasSimulationStarted || pedestrianPhaseActiveRef.current) {
+    if (
+      pedestrianState.current === "inactive" ||
+      pedestrianState.current === "active"
+    ) {
       return;
     }
 
     const runPhase = () => {
-      if (pedestrianRequestPending.current) {
+      if (pedestrianState.current === "requested") {
         clearInterval(interval);
         runPedestrianGreenPhase();
       } else {
