@@ -23,6 +23,10 @@ export const App = () => {
   const runPedestrianGreenPhase = useRunPedestrianGreenPhase();
 
   const runPhase = () => {
+    if (!hasSimulationStarted) {
+      return;
+    }
+
     if (isPedestrianRequestPending) {
       runPedestrianGreenPhase();
       return;
@@ -32,9 +36,6 @@ export const App = () => {
   };
 
   useEffect(() => {
-    if (!hasSimulationStarted) {
-      return;
-    }
     runPhase();
   }, []);
 
